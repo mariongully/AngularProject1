@@ -1,0 +1,21 @@
+<div class="container">
+  <h2>OpenLab – Connexion aux instruments</h2>
+
+  <button class="start-btn" (click)="start()" [disabled]="isLoading">
+    {{ isLoading ? 'Chargement...' : 'Démarrer' }}
+  </button>
+
+  <p class="message">{{ message }}</p>
+
+  <div *ngIf="instruments.length > 0" class="instrument-list">
+    <h3>Instruments disponibles :</h3>
+    <div *ngFor="let instrument of instruments" class="instrument-card">
+      <span class="instrument-name">{{ instrument.name }}</span>
+
+      <awf-button id="btnConnect"label="Connect" (click)="connectInstrument({ name: instrument.name, globalId: instrument.globalId })">
+        Connecter
+      </awf-button>
+
+    </div>
+  </div>
+</div>
