@@ -1,21 +1,82 @@
 <div class="container">
-  <h2>OpenLab – Connexion aux instruments</h2>
 
-  <button class="start-btn" (click)="start()" [disabled]="isLoading">
-    {{ isLoading ? 'Chargement...' : 'Démarrer' }}
-  </button>
+  <!--<h2>OpenLab — Connect to instruments</h2>-->
 
-  <p class="message">{{ message }}</p>
+  <awf-title-bar header="OpenLab — Connect to instruments" title="tt" >
 
-  <div *ngIf="instruments.length > 0" class="instrument-list">
-    <h3>Instruments disponibles :</h3>
-    <div *ngFor="let instrument of instruments" class="instrument-card">
-      <span class="instrument-name">{{ instrument.name }}</span>
+    <awf-button id="btnStart" (click)="start()" [disabled]="isLoading" style="margin-left: 12px;">
+      {{ isLoading ? 'Loading...' : 'Start' }}
+    </awf-button>
+  </awf-title-bar>
 
-      <awf-button id="btnConnect"label="Connect" (click)="connectInstrument({ name: instrument.name, globalId: instrument.globalId })">
-        Connecter
-      </awf-button>
 
+  <div class="top-controls">
+    <!-- Credentials inputs (defaults preserved) -->
+    <awf-input style="--awf-input-width: 180px;">
+      <awf-text slot="label" for="username-input">Username</awf-text>
+      <input id="username-input" type="text" autocomplete="username" class="input-field" [(ngModel)]="username" />
+    </awf-input>
+
+    <awf-input-password style="--awf-input-width: 180px;">
+      <awf-text slot="label" for="password-input">Password</awf-text>
+      <input id="password-input" type="password" autocomplete="current-password" class="input-field" [(ngModel)]="password" />
+    </awf-input-password>
+
+    <awf-banner open="" header="{{ message }}">
+
+    </awf-banner>
+    <!--<span class="message">{{ message }}</span>-->
+  </div>
+
+  <div class="main-grid">
+    <div class="left-column">
+      <h3>Available instruments:</h3>
+      <div *ngFor="let instrument of instruments" class="instrument-card">
+        <div class="instrument-left">
+          <span class="state-square" [ngClass]="getStateClass(instrument.instrumentState)" title="{{instrument.instrumentState}}"></span>
+          <div class="instrument-meta">
+            <div class="instrument-name">{{ instrument.name }}</div>
+            <small class="instrument-state-text" *ngIf="!instrument.stateLoading"> {{ instrument.instrumentState}}</small>
+            <small class="instrument-state-text" *ngIf="instrument.stateLoading"> (loading...) </small>
+          </div>
+        </div>
+
+        <awf-button id="btnConnect" label="Connect" (click)="connectInstrument(instrument)">
+          Connect
+        </awf-button>
+      </div>
+    </div>
+
+    <div class="right-column">
+      <h3>Run submission</h3>
+      <div *ngIf="!selectedInstrument" class="no-selection">
+        Select and connect an instrument on the left to display the run form.
+      </div>
+
+      <div *ngIf="selectedInstrument" class="run-panel">
+        <div class="selected-title">Instrument: {{ selectedInstrument.name }}</div>
+
+        <awf-input style="--awf-input-width: 100%;">
+          <awf-text slot="label" for="resultpath-input">Result path</awf-text>
+          <input id="resultpath-input" type="text" class="input-field" [(ngModel)]="resultPath" />
+        </awf-input>
+
+        <awf-input style="--awf-input-width: 100%;">
+          <awf-text slot="label" for="resultfile-input">Result file name</awf-text>
+          <input id="resultfile-input" type="text" class="input-field" [(ngModel)]="resultFileName" />
+        </awf-input>
+
+        <awf-input style="--awf-input-width: 100%;">
+          <awf-text slot="label" for="acqmethod-input">Acquisition method (path)</awf-text>
+          <input id="acqmethod-input" type="text" class="input-field" [(ngModel)]="acquisitionMethod" />
+        </awf-input>
+
+        <div class="run-actions">
+          <awf-button id="btnRun" label="Run" (click)="submitRun()" [disabled]="runInProgress">
+            {{ runInProgress ? 'Running...' : 'RUN' }}
+          </awf-button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

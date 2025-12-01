@@ -19,4 +19,26 @@ export class InstrumentService {
     const url = `${this.initializeUrl}/${globalId}:initialize`;
     return this.http.post(url, {}, { headers });
   }
+
+  // Existing per-instrument status by globalId (kept as fallback)
+  getInstrumentStatus(globalId: string, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.initializeUrl}/${globalId}/status`;
+    return this.http.get(url, { headers });
+  }
+
+  // New: batch status endpoint accepting an array of numeric instrument ids
+  getInstrumentsStatusByIds(ids: number[], token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.instrumentsUrl}/status`;
+    // The API expects a JSON array body like: [123, 456]
+    return this.http.post(url, ids, { headers });
+  }
+
+  // submit run (existing)
+  submitRun(globalId: string, token: string, payload: any): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.initializeUrl}/${globalId}/runs:submit`;
+    return this.http.post(url, payload, { headers });
+  }
 }

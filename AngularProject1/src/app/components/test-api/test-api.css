@@ -1,9 +1,14 @@
-
 .container {
-  max-width: 600px;
+  max-width: 1000px;
   margin: auto;
   padding: 1rem;
   font-family: Arial, sans-serif;
+}
+
+.top-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .start-btn {
@@ -12,8 +17,28 @@
 }
 
 .message {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   font-weight: bold;
+}
+
+.main-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1rem;
+}
+
+.left-column {
+  background: #fafafa;
+  padding: 0.5rem;
+  border-radius: 6px;
+}
+
+.right-column {
+  background: #ffffff;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ececec;
 }
 
 .instrument-list {
@@ -30,6 +55,75 @@
   border-radius: 5px;
 }
 
+.instrument-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.instrument-meta {
+  display: flex;
+  flex-direction: column;
+}
+
 .instrument-name {
   font-weight: 500;
+}
+
+.state-square {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  display: inline-block;
+  margin-right: 0.5rem;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+/* State colors */
+.state-offline { background: #808080; }   /* grey */
+.state-idle    { background: #28a745; }   /* green */
+.state-error   { background: #dc3545; }   /* red */
+.state-notready{ background: #ff9500; }   /* orange */
+.state-unknown { background: #bdbdbd; }   /* light grey */
+
+.instrument-state-text {
+  margin-left: 0.5rem;
+  color: #555;
+}
+
+.no-selection {
+  color: #666;
+  font-style: italic;
+}
+
+.run-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  color: #333;
+  margin-top: 0.25rem;
+}
+
+.input-field {
+  padding: 0.45rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.run-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: flex-start;
+  gap: 0.5rem;
+}
+
+.selected-title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }

@@ -8,16 +8,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(): Observable<any> {
+  // Accept optional username/password; keep existing defaults when not provided
+  login(username: string = 'admin', password: string = 'admin'): Observable<any> {
     const body = {
-      username: 'admin',
+      username,
       domain: 'MYDOMAIN',
-      password: 'admin',
+      password,
       userApplication: 'olcds',
       clientDevice: 'PC02'
     };
     return this.http.post(this.loginUrl, body, { responseType: 'text' });
-    
   }
 }
-``
