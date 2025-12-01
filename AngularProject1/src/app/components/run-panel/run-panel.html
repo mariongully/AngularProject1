@@ -1,0 +1,32 @@
+<div class="right-column">
+  <h3>Run submission</h3>
+
+  <div *ngIf="!selectedInstrument" class="no-selection">
+    Select and connect an instrument on the left to display the run form.
+  </div>
+
+  <div *ngIf="selectedInstrument" class="run-panel">
+    <div class="selected-title">Instrument: {{ selectedInstrument.name }}</div>
+
+    <awf-input style="--awf-input-width: 100%;">
+      <awf-text slot="label" for="resultpath-input">Result path</awf-text>
+      <input id="resultpath-input" type="text" class="input-field" [(ngModel)]="resultPath" />
+    </awf-input>
+
+    <awf-input style="--awf-input-width: 100%;">
+      <awf-text slot="label" for="resultfile-input">Result file name</awf-text>
+      <input id="resultfile-input" type="text" class="input-field" [(ngModel)]="resultFileName" />
+    </awf-input>
+
+    <awf-input style="--awf-input-width: 100%;">
+      <awf-text slot="label" for="acqmethod-input">Acquisition method (path)</awf-text>
+      <input id="acqmethod-input" type="text" class="input-field" [(ngModel)]="acquisitionMethod" />
+    </awf-input>
+
+    <div class="run-actions">
+      <awf-button id="btnRun" label="Run" (click)="submit()" [disabled]="runInProgress">
+        {{ runInProgress ? 'Running...' : 'RUN' }}
+      </awf-button>
+    </div>
+  </div>
+</div>

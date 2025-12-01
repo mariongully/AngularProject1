@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { InstrumentService } from '../../services/instrument.service';
-import '@agilent/awf-wc/button'; 
-import '@agilent/awf-wc/input-text'; 
+import '@agilent/awf-wc/button';
+import '@agilent/awf-wc/input-text';
 import '@agilent/awf-wc/title-bar';
 import '@agilent/awf-wc/input-password';
 import '@agilent/awf-wc/banner';
+import { RunForm } from '../run-panel/run-panel';
+import { Instrument } from '../instrument-list/instrument-list';
 
 @Component({
   selector: 'app-test-api',
@@ -17,16 +19,16 @@ export class TestApi {
   isLoading = false;
   message = '';
   token = '';
-  instruments: { id?: number; name: string; globalId: string; instrumentState?: string; stateLoading?: boolean }[] = [];
+  instruments: Instrument[] = [];
 
   // Credentials editable in the UI, default values preserved
   username = 'admin';
   password = 'admin';
 
   // Selected instrument shown in the right panel after connect
-  selectedInstrument: { id?: number; name: string; globalId: string; instrumentState?: string; stateLoading?: boolean } | null = null;
+  selectedInstrument: Instrument | null = null;
 
-  // Run form fields (editable by user)
+  // Default run form values (passed to RunPanel)
   resultFileName = 'test1';
   acquisitionMethod = 'C:\\Enterprise\\Projects\\TestSCP\\Methods\\dp.amx';
   resultPath = 'C:\\Enterprise\\Projects\\TestSCP\\Results';
@@ -41,7 +43,6 @@ export class TestApi {
     this.isLoading = true;
     this.message = 'Connecting...';
 
-    // Pass user-provided credentials (defaults used if unchanged)
     this.authService.login(this.username, this.password).subscribe({
       next: (rawToken: string) => {
         this.token = rawToken.replace(/"/g, '');
@@ -57,24 +58,21 @@ export class TestApi {
               stateLoading: true
             }));
 
-            // Use batch status endpoint with numeric ids when possible
+            // existing batching logic
             const ids = this.instruments.map(i => i.id).filter((v): v is number => typeof v === 'number');
             if (ids.length > 0) {
               this.instrumentService.getInstrumentsStatusByIds(ids, this.token).subscribe({
                 next: (statusArray: any) => {
-                  // Expecting an array of status objects; robust mapping:
                   if (Array.isArray(statusArray)) {
                     for (const status of statusArray) {
-                      const instrumentId = status?.instrumentId ?? status?.id ?? status?.instrumentId;
-                      const state = status?.instrumentState ?? status?.state;
-                      // find by numeric id
+                      const instrumentId = status?.instrumentId ?? status?.id;
+                      const state = status?.hardwareStatus ?? status?.instrumentState ?? status?.state;
                       const inst = this.instruments.find(x => x.id === instrumentId || String(x.id) === String(instrumentId));
                       if (inst) {
                         inst.instrumentState = state ?? 'Unknown';
                         inst.stateLoading = false;
                       }
                     }
-                    // any instrument not updated -> clear loading and set Unknown
                     for (const inst of this.instruments) {
                       if (inst.stateLoading) {
                         inst.instrumentState = inst.instrumentState ?? 'Unknown';
@@ -82,7 +80,6 @@ export class TestApi {
                       }
                     }
                   } else {
-                    // fallback to previous per-globalId calls if response unexpected
                     this.refreshStatusesIndividually();
                   }
                 },
@@ -92,7 +89,6 @@ export class TestApi {
                 }
               });
             } else {
-              // No numeric ids: fallback to individual status calls
               this.refreshStatusesIndividually();
             }
 
@@ -114,12 +110,12 @@ export class TestApi {
     });
   }
 
-  // Helper: original per-instrument status retrieval (fallback)
+  // fallback per-instrument retrieval
   private refreshStatusesIndividually(): void {
     for (const inst of this.instruments) {
       this.instrumentService.getInstrumentStatus(inst.globalId, this.token).subscribe({
         next: (statusData: any) => {
-          inst.instrumentState = statusData?.instrumentState ?? 'Unknown';
+          inst.instrumentState = statusData?.hardwareStatus ?? statusData?.instrumentState ?? 'Unknown';
           inst.stateLoading = false;
         },
         error: (err) => {
@@ -131,82 +127,39 @@ export class TestApi {
     }
   }
 
-  connectInstrument(instrument: { id?: number; name: string; globalId: string; instrumentState?: string; stateLoading?: boolean }): void {
+  connectInstrument(instrument: Instrument): void {
     this.message = `Connecting to instrument "${instrument.name}"...`;
     instrument.stateLoading = true;
 
     this.instrumentService.initializeInstrument(instrument.globalId, this.token).subscribe({
       next: (res) => {
-        // After successful initialize, prefer the numeric-id batch endpoint if id exists
+        // after initialize prefer batch endpoint using numeric id
         if (typeof instrument.id === 'number') {
           this.instrumentService.getInstrumentsStatusByIds([instrument.id], this.token).subscribe({
             next: (statusArray: any) => {
-              // try to map response
               if (Array.isArray(statusArray) && statusArray.length > 0) {
                 const status = statusArray[0];
                 instrument.instrumentState = status?.hardwareStatus ?? status?.instrumentState ?? 'Unknown';
                 instrument.stateLoading = false;
                 this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
               } else if (statusArray && (statusArray.hardwareStatus || statusArray.instrumentState || statusArray.state)) {
-                // sometimes API returns single object
                 instrument.instrumentState = (statusArray.hardwareStatus ?? statusArray.instrumentState ?? statusArray.state) ?? 'Unknown';
                 instrument.stateLoading = false;
                 this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
               } else {
-                // fallback to per-globalId call
-                this.instrumentService.getInstrumentStatus(instrument.globalId, this.token).subscribe({
-                  next: (st: any) => {
-                    instrument.instrumentState = st?.hardwareStatus ?? st?.instrumentState ?? 'Unknown';
-                    instrument.stateLoading = false;
-                    this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
-                  },
-                  error: (err) => {
-                    instrument.instrumentState = 'Unknown';
-                    instrument.stateLoading = false;
-                    this.message = `Initialized but failed to retrieve status for "${instrument.name}".`;
-                    console.error(err);
-                  }
-                });
+                this.fallbackStatusByGlobalId(instrument);
               }
               this.selectedInstrument = instrument;
             },
             error: (err) => {
               console.error('Batch status after initialize failed, falling back', err);
-              // fallback
-              this.instrumentService.getInstrumentStatus(instrument.globalId, this.token).subscribe({
-                next: (st: any) => {
-                  instrument.instrumentState = st?.instrumentState ?? 'Unknown';
-                  instrument.stateLoading = false;
-                  this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
-                  this.selectedInstrument = instrument;
-                },
-                error: (err2) => {
-                  instrument.instrumentState = 'Unknown';
-                  instrument.stateLoading = false;
-                  this.message = `Initialized but failed to retrieve status for "${instrument.name}".`;
-                  console.error(err2);
-                  this.selectedInstrument = instrument;
-                }
-              });
+              this.fallbackStatusByGlobalId(instrument);
+              this.selectedInstrument = instrument;
             }
           });
         } else {
-          // no numeric id -> keep previous behavior
-          this.instrumentService.getInstrumentStatus(instrument.globalId, this.token).subscribe({
-            next: (statusData: any) => {
-              instrument.instrumentState = statusData?.instrumentState ?? 'Unknown';
-              instrument.stateLoading = false;
-              this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
-              this.selectedInstrument = instrument;
-            },
-            error: (err) => {
-              instrument.instrumentState = 'Unknown';
-              instrument.stateLoading = false;
-              this.message = `Initialized but failed to retrieve status for "${instrument.name}".`;
-              console.error(err);
-              this.selectedInstrument = instrument;
-            }
-          });
+          this.fallbackStatusByGlobalId(instrument);
+          this.selectedInstrument = instrument;
         }
 
         console.log('Initialize response:', res);
@@ -219,7 +172,24 @@ export class TestApi {
     });
   }
 
-  submitRun(): void {
+  private fallbackStatusByGlobalId(instrument: Instrument) {
+    this.instrumentService.getInstrumentStatus(instrument.globalId, this.token).subscribe({
+      next: (st: any) => {
+        instrument.instrumentState = st?.hardwareStatus ?? st?.instrumentState ?? 'Unknown';
+        instrument.stateLoading = false;
+        this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
+      },
+      error: (err) => {
+        instrument.instrumentState = 'Unknown';
+        instrument.stateLoading = false;
+        this.message = `Initialized but failed to retrieve status for "${instrument.name}".`;
+        console.error(err);
+      }
+    });
+  }
+
+  // Handler invoked by RunPanelComponent
+  onRunSubmit(form: RunForm): void {
     if (!this.selectedInstrument) {
       this.message = 'No instrument selected.';
       return;
@@ -232,12 +202,11 @@ export class TestApi {
     this.runInProgress = true;
     this.message = `Submitting run to "${this.selectedInstrument.name}"...`;
 
-    // Build the payload following the example structure
     const payload = {
       runType: 'SingleRun',
       projectId: '56',
-      resultPath: this.resultPath,
-      resultFileName: this.resultFileName,
+      resultPath: form.resultPath,
+      resultFileName: form.resultFileName,
       isPriority: true,
       injectionLine: {
         type: 'SingleRunInjectionLine',
@@ -245,7 +214,7 @@ export class TestApi {
         injectionsPerSample: 1,
         sampleName: 'demo',
         methods: {
-          acquisitionMethod: this.acquisitionMethod,
+          acquisitionMethod: form.acquisitionMethod,
           processingMethod: '',
           samplePrepMethod: ''
         },
@@ -289,18 +258,5 @@ export class TestApi {
         console.error('Run submit error:', err);
       }
     });
-  }
-
-  // Maps instrumentState string to a CSS class
-  getStateClass(state?: string): string {
-    if (!state) { return 'state-unknown'; }
-    switch ((state || '').toLowerCase()) {
-      case 'offline': return 'state-offline';
-      case 'idle': return 'state-idle';
-      case 'error': return 'state-error';
-      case 'notready': return 'state-notready';
-      case 'not ready': return 'state-notready';
-      default: return 'state-unknown';
-    }
   }
 }
