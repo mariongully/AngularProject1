@@ -19,7 +19,7 @@ export class RunPanelComponent implements OnChanges {
   @Input() initialResultFileName = 'test1';
   @Input() initialAcquisitionMethod = 'C:\\Enterprise\\Projects\\TestSCP\\Methods\\dp.amx';
   @Input() runInProgress = false;
-
+  @Input() token = '';
   @Output() runSubmit = new EventEmitter<RunForm>();
 
   resultPath = this.initialResultPath;

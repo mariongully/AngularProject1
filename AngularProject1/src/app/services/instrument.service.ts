@@ -27,7 +27,7 @@ export class InstrumentService {
     return this.http.get(url, { headers });
   }
 
-  // New: batch status endpoint accepting an array of numeric instrument ids
+  // batch status endpoint accepting an array of numeric instrument ids
   getInstrumentsStatusByIds(ids: number[], token: string): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const url = `${this.instrumentsUrl}/status`;
@@ -35,10 +35,17 @@ export class InstrumentService {
     return this.http.post(url, ids, { headers });
   }
 
-  // submit run (existing)
+  // submit run 
   submitRun(globalId: string, token: string, payload: any): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const url = `${this.initializeUrl}/${globalId}/runs:submit`;
     return this.http.post(url, payload, { headers });
   }
+    //  get run queue for a given instrument globalId
+    getRunQueue(globalId: string, token: string): Observable < any > {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      const url = `${this.initializeUrl}/${globalId}/runs`;
+      return this.http.get(url, { headers });
+    }
+  
 }

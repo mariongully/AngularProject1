@@ -7,12 +7,11 @@ import { App } from './app';
 import { TestApi } from './components/test-api/test-api.component';
 import { InstrumentListComponent } from './components/instrument-list/instrument-list';
 import { RunPanelComponent } from './components/run-panel/run-panel';
+import { RunQueueComponent } from './components/run-queue/run-queue';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 //import '@agilent/awf-wc';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-//import { RunPanel } from './components/run-panel/run-panel';
-//import { Instrument } from './components/instrument-list/instrument-list';
 
 @NgModule({
   declarations: [
@@ -20,8 +19,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     TestApi,
     InstrumentListComponent,
     RunPanelComponent,
-    //RunPanel,
-    //Instrument
+    RunQueueComponent,
   ],
   imports: [
     BrowserModule,

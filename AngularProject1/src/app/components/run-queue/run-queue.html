@@ -1,0 +1,25 @@
+<div class="right-column" style="margin-top:16px;">
+  <h3>Run queue</h3>
+
+  <div *ngIf="loading">Loading run queue...</div>
+
+  <div *ngIf="!loading && (!runQueue || runQueue.length === 0)">
+    No runs in queue.
+  </div>
+
+  <ul *ngIf="!loading && runQueue && runQueue.length > 0" class="run-queue-list">
+    <li *ngFor="let r of runQueue" class="run-queue-item" style="margin-bottom:8px;">
+      <div>
+        <strong>Status:</strong>
+        <span [ngClass]="{'dummy-item': r.isDummy}">{{ r.status ?? 'N/A' }}</span>
+        <span *ngIf="r.isDummy" class="dummy-badge"> (example)</span>
+      </div>
+      <div><strong>Type:</strong> {{ r.sampleRunType ?? 'N/A' }}</div>
+      <div><strong>Submission:</strong> {{ r.submissionDate ?? r.submittedAt ?? r.submittedOn ?? '-' }}</div>
+      <div>
+        <strong>Result name:</strong>
+        <span [ngClass]="{'dummy-item': r.isDummy}">{{ r.resultFileName ?? '-' }}</span>
+      </div>
+    </li>
+  </ul>
+</div>

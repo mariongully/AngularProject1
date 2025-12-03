@@ -1,0 +1,47 @@
+/* Run queue specific styles */
+
+.run-queue {
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+  .run-queue h3,
+  .run-queue h4 {
+    margin: 0 0 8px 0;
+    font-weight: 600;
+  }
+
+.run-queue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.run-queue-item {
+  background: #fbfbfb;
+  border: 1px solid #eee;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.01) inset;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 4px;
+}
+
+  .run-queue-item div {
+    color: #333;
+    line-height: 1.2;
+  }
+
+  .run-queue-item strong {
+    color: #222;
+    margin-right: 6px;
+  }
+
+.run-queue-empty {
+  color: #666;
+  font-style: italic;
+}

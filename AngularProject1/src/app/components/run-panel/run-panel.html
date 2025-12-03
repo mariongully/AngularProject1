@@ -30,3 +30,9 @@
     </div>
   </div>
 </div>
+  <!-- Run queue child component -->
+  <app-run-queue *ngIf="selectedInstrument"
+                 [globalId]="selectedInstrument!.globalId"
+                 [token]="token">
+  </app-run-queue>
+
