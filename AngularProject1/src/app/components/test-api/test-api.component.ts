@@ -8,6 +8,7 @@ import '@agilent/awf-wc/input-password';
 import '@agilent/awf-wc/banner';
 import { RunForm } from '../run-panel/run-panel';
 import { Instrument } from '../instrument-list/instrument-list';
+import { Project } from '../project-list/project-list';
 
 @Component({
   selector: 'app-test-api',
@@ -20,6 +21,7 @@ export class TestApi {
   message = '';
   token = '';
   instruments: Instrument[] = [];
+  projects: Project[] = [];
 
   // Credentials editable in the UI, default values preserved
   username = 'admin';
@@ -27,12 +29,18 @@ export class TestApi {
 
   // Selected instrument shown in the right panel after connect
   selectedInstrument: Instrument | null = null;
+  selectedProject: Project | null = null;
 
   // Default run form values (passed to RunPanel)
   resultFileName = 'test1';
-  acquisitionMethod = 'C:\\Enterprise\\Projects\\TestSCP\\Methods\\dp.amx';
-  resultPath = 'C:\\Enterprise\\Projects\\TestSCP\\Results';
+  acquisitionMethod = 'C:\\CDSProjects\\DataPlayerProject\\Methods\\dp.amx';
+  resultPath = 'C:\\CDSProjects\\DataPlayerProject\\Results';
   runInProgress = false;
+  activeTab = 'home';
+
+  setActive(tab: string): void {
+    this.activeTab = tab;
+  }
 
   constructor(
     private authService: AuthService,
@@ -46,6 +54,23 @@ export class TestApi {
     this.authService.login(this.username, this.password).subscribe({
       next: (rawToken: string) => {
         this.token = rawToken.replace(/"/g, '');
+        this.message = 'Connected. Retrieving projects...';
+
+        this.instrumentService.getProject(this.token).subscribe({
+          next: (data) => {
+            this.projects = data.projects.map((i: any) => ({
+              id: i.id,
+              name: i.name,
+              globalId: i.globalId,
+            }));
+          },
+        error: (err) => {
+            this.message = 'Error fetching projects.';
+            this.isLoading = false;
+            console.error(err);
+          }
+      });
+
         this.message = 'Connected. Retrieving instruments...';
 
         this.instrumentService.getInstruments(this.token).subscribe({
@@ -128,40 +153,17 @@ export class TestApi {
   }
 
   connectInstrument(instrument: Instrument): void {
+    //if (!this.selectedProject) {
+    //  this.message = 'No project selected.';
+    //  return;
+    //}
+
     this.message = `Connecting to instrument "${instrument.name}"...`;
     instrument.stateLoading = true;
 
     this.instrumentService.initializeInstrument(instrument.globalId, this.token).subscribe({
       next: (res) => {
-        // after initialize prefer batch endpoint using numeric id
-        if (typeof instrument.id === 'number') {
-          this.instrumentService.getInstrumentsStatusByIds([instrument.id], this.token).subscribe({
-            next: (statusArray: any) => {
-              if (Array.isArray(statusArray) && statusArray.length > 0) {
-                const status = statusArray[0];
-                instrument.instrumentState = status?.hardwareStatus ?? status?.instrumentState ?? 'Unknown';
-                instrument.stateLoading = false;
-                this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
-              } else if (statusArray && (statusArray.hardwareStatus || statusArray.instrumentState || statusArray.state)) {
-                instrument.instrumentState = (statusArray.hardwareStatus ?? statusArray.instrumentState ?? statusArray.state) ?? 'Unknown';
-                instrument.stateLoading = false;
-                this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
-              } else {
-                this.fallbackStatusByGlobalId(instrument);
-              }
-              this.selectedInstrument = instrument;
-            },
-            error: (err) => {
-              console.error('Batch status after initialize failed, falling back', err);
-              this.fallbackStatusByGlobalId(instrument);
-              this.selectedInstrument = instrument;
-            }
-          });
-        } else {
-          this.fallbackStatusByGlobalId(instrument);
-          this.selectedInstrument = instrument;
-        }
-
+        this.fallbackStatusByGlobalId(instrument);
         console.log('Initialize response:', res);
       },
       error: (err) => {
@@ -170,6 +172,39 @@ export class TestApi {
         console.error(err);
       }
     });
+  }
+
+  private getStatusById(instrument: Instrument) {
+
+  // after initialize prefer batch endpoint using numeric id
+  if (typeof instrument.id === 'number') {
+    this.instrumentService.getInstrumentsStatusByIds([instrument.id], this.token).subscribe({
+      next: (statusArray: any) => {
+        if (Array.isArray(statusArray) && statusArray.length > 0) {
+          const status = statusArray[0];
+          instrument.instrumentState = status?.hardwareStatus ?? status?.instrumentState ?? 'Unknown';
+          instrument.stateLoading = false;
+          this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
+        } else if (statusArray && (statusArray.hardwareStatus || statusArray.instrumentState || statusArray.state)) {
+          instrument.instrumentState = (statusArray.hardwareStatus ?? statusArray.instrumentState ?? statusArray.state) ?? 'Unknown';
+          instrument.stateLoading = false;
+          this.message = `Status updated for "${instrument.name}": ${instrument.instrumentState}`;
+        } else {
+          this.fallbackStatusByGlobalId(instrument);
+        }
+        this.selectedInstrument = instrument;
+      },
+      error: (err) => {
+        console.error('Batch status after initialize failed, falling back', err);
+        this.fallbackStatusByGlobalId(instrument);
+        this.selectedInstrument = instrument;
+      }
+    });
+    } else {
+      this.fallbackStatusByGlobalId(instrument);
+      this.selectedInstrument = instrument;
+    }
+
   }
 
   private fallbackStatusByGlobalId(instrument: Instrument) {
@@ -203,8 +238,8 @@ export class TestApi {
     this.message = `Submitting run to "${this.selectedInstrument.name}"...`;
 
     const payload = {
-      runType: 'SingleRun',
-      projectId: '56',
+      type: 'SingleRun',
+      projectId: '15',
       resultPath: form.resultPath,
       resultFileName: form.resultFileName,
       isPriority: true,
@@ -258,5 +293,12 @@ export class TestApi {
         console.error('Run submit error:', err);
       }
     });
+  }
+
+  // Handler for project selection from the child component
+  selectProject(project: Project): void {
+    this.selectedProject = project;
+    this.message = `Selected project: ${project.name}`;
+    console.log('Project selected:', project);
   }
 }

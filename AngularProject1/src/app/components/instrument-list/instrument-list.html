@@ -1,18 +1,23 @@
 <div class="left-column">
-  <h3>Available instruments:</h3>
-
-  <div *ngFor="let instrument of instruments" class="instrument-card">
-    <div class="instrument-left">
-      <span class="state-square" [ngClass]="getStateClass(instrument.instrumentState)" title="{{instrument.instrumentState}}"></span>
-      <div class="instrument-meta">
-        <div class="instrument-name">{{ instrument.name }}</div>
-        <small class="instrument-state-text" *ngIf="!instrument.stateLoading"> {{ instrument.instrumentState }}</small>
-        <small class="instrument-state-text" *ngIf="instrument.stateLoading"> (loading...) </small>
-      </div>
-    </div>
-
-    <awf-button id="btnConnect" label="Connect" (click)="onConnect(instrument)">
-      Connect
-    </awf-button>
-  </div>
+  <h3>Associated project:</h3>
+  <awf-text>{{ selectedProject?.name || 'No project selected' }}</awf-text>
 </div>
+
+  <div class="left-column">
+    <h3>Available instruments:</h3>
+
+    <div *ngFor="let instrument of instruments" class="instrument-card">
+      <div class="instrument-left">
+        <span class="state-square" [ngClass]="getStateClass(instrument.instrumentState)" title="{{instrument.instrumentState}}"></span>
+        <div class="instrument-meta">
+          <div class="instrument-name">{{ instrument.name }}</div>
+          <small class="instrument-state-text" *ngIf="!instrument.stateLoading"> {{ instrument.instrumentState }}</small>
+          <small class="instrument-state-text" *ngIf="instrument.stateLoading"> (loading...) </small>
+        </div>
+      </div>
+
+      <awf-button id="btnConnect" label="Connect" (click)="onConnect(instrument)">
+        Connect
+      </awf-button>
+    </div>
+  </div>

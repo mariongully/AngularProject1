@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Project } from '../project-list/project-list';
 
 export interface Instrument {
   id?: number;
@@ -12,10 +13,12 @@ export interface Instrument {
   selector: 'app-instrument-list',
   templateUrl: './instrument-list.html',
   standalone: false,
-  styleUrls: ['../test-api/test-api.css']
+  styleUrls: ['../test-api/test-api.css','instrument-list.css']
 })
 export class InstrumentListComponent {
   @Input() instruments: Instrument[] = [];
+  // Accept null from the parent to match TestApi.selectedProject (Project | null)
+  @Input() selectedProject: Project | null = null;
   @Output() connect = new EventEmitter<Instrument>();
 
   // Maps instrumentState string to a CSS class (duplicate small helper for isolation)

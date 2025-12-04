@@ -15,9 +15,9 @@ export interface RunForm {
 })
 export class RunPanelComponent implements OnChanges {
   @Input() selectedInstrument: Instrument | null = null;
-  @Input() initialResultPath = 'C:\\Enterprise\\Projects\\TestSCP\\Results';
+  @Input() initialResultPath = 'C:\\CDSProjects\\DataPlayerProject\\Results';
   @Input() initialResultFileName = 'test1';
-  @Input() initialAcquisitionMethod = 'C:\\Enterprise\\Projects\\TestSCP\\Methods\\dp.amx';
+  @Input() initialAcquisitionMethod = 'C:\\CDSProjects\\DataPlayerProject\\Methods\\dp.amx';
   @Input() runInProgress = false;
   @Input() token = '';
   @Output() runSubmit = new EventEmitter<RunForm>();

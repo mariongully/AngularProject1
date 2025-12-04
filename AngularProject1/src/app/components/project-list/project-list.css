@@ -1,0 +1,48 @@
+.no-selection {
+  color: #666;
+  font-style: italic;
+}
+
+.project-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.project-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.project-name {
+  font-weight: 500;
+}
+
+.project-list {
+  margin-top: 2rem;
+}
+
+.project-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f2f2f2;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.12s ease, box-shadow 0.12s ease;
+  cursor: pointer; /* whole card is clickable */
+  outline: none;
+}
+
+  /* keyboard focus ring */
+  .project-card:focus {
+    box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.18);
+  }
+
+  /* Visual for the single selected project */
+  .project-card.selected {
+    background: #e6f4ff; /* light blue background */
+    box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    border-left: 4px solid #0078d4; /* accent color */
+  }

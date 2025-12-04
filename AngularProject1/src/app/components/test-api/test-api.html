@@ -1,39 +1,224 @@
-<div class="container">
-  <awf-title-bar header="OpenLab — Connect to instruments">
-    <awf-button id="btnStart" (click)="start()" [disabled]="isLoading" style="margin-left: 12px;">
-      {{ isLoading ? 'Loading...' : 'Start' }}
+<div style="height: 800px;">
+  <awf-navigation-bar>
+    <awf-button slot="menuTrigger">
+      <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;meta-menu-dot&quot;&gt;
+&lt;g&gt;
+	&lt;rect x=&quot;11&quot; y=&quot;19&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;3&quot; y=&quot;3&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;3&quot; y=&quot;11&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;3&quot; y=&quot;19&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;19&quot; y=&quot;19&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;19&quot; y=&quot;3&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;11&quot; y=&quot;11&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;19&quot; y=&quot;11&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;11&quot; y=&quot;3&quot; width=&quot;2&quot; height=&quot;2&quot;&gt;&lt;/rect&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
     </awf-button>
-  </awf-title-bar>
+    <awf-button slot="brand">
+      <awf-icon src="assets/Acquisition_System_Launcher_24.svg"></awf-icon>
+      Agilent OpenLab
+    </awf-button>
+    <awf-button (click)="setActive('home')" [class.active]="activeTab === 'home'">
+      <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;home&quot;&gt;
+&lt;path d=&quot;M21.3,8.6L12,1.9L2.7,8.6l0.6,0.8L4,8.9V22h16V8.9l0.7,0.5L21.3,8.6z M14,21h-4v-7h4V21z M19,21h-4v-8H9v8H5V8.2l7-5l7,5.1
+	V21z&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;"></awf-icon>
+      Home
+    </awf-button>
+    <awf-button (click)="setActive('projects')" [class.active]="activeTab === 'projects'">
+      <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;Layer_1&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;projects&quot;&gt;
+&lt;g&gt;
+	&lt;rect x=&quot;6&quot; y=&quot;18&quot; width=&quot;10&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;6&quot; y=&quot;15&quot; width=&quot;10&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;6&quot; y=&quot;12&quot; width=&quot;10&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+	&lt;path d=&quot;M21,6V2h-2.5H3v20h15h1c1.1,0,2-0.9,2-2v-4h-2v-1c1.1,0,2-0.9,2-2V9h-2V8C20.1,8,21,7.1,21,6z M20,17v3c0,0.6-0.4,1-1,1v-4
+		H20z M20,10v3c0,0.6-0.4,1-1,1v-4H20z M18,15v1v5H4V3h14.5H20v3c0,0.6-0.4,1-1,1h-0.5H18v2V15z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+      Projects
+    </awf-button>
+    <awf-button (click)="setActive('instruments')" [class.active]="activeTab === 'instruments'">
+      <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;assay-media&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.4,8.8L14.5,7H15V2H9v5h0.5L6.6,8.8C6.2,9.1,6,9.5,6,10v10.5C6,21.3,6.7,22,7.5,22h9c0.8,0,1.5-0.7,1.5-1.5V10
+		C18,9.5,17.8,9.1,17.4,8.8z M7.2,9.6L11,7.3V6h-1V3h4v3h-1v1.3l3.8,2.3C16.9,9.7,17,9.8,17,10H7C7,9.8,7.1,9.7,7.2,9.6z M16.5,21
+		h-9C7.2,21,7,20.8,7,20.5V11h10v9.5C17,20.8,16.8,21,16.5,21z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+      Instruments
+    </awf-button>
+    <hr>
+    <awf-button (click)="setActive('status')" [class.active]="activeTab === 'status'">
+        <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;list-view&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M2,14h6v-4H2V14z M3,11h4v2H3V11z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M2,22h6v-4H2V22z M3,19h4v2H3V19z&quot;&gt;&lt;/path&gt;
+	&lt;rect x=&quot;9&quot; y=&quot;19&quot; width=&quot;13&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;9&quot; y=&quot;3&quot; width=&quot;13&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+	&lt;rect x=&quot;9&quot; y=&quot;11&quot; width=&quot;13&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
+	&lt;path d=&quot;M2,6h6V2H2V6z M3,3h4v2H3V3z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+        Status
+      </awf-button>
+      <awf-button (click)="setActive('singlesample')" [class.active]="activeTab === 'singlesample'">
+        <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;assay-media&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.4,8.8L14.5,7H15V2H9v5h0.5L6.6,8.8C6.2,9.1,6,9.5,6,10v10.5C6,21.3,6.7,22,7.5,22h9c0.8,0,1.5-0.7,1.5-1.5V10
+		C18,9.5,17.8,9.1,17.4,8.8z M7.2,9.6L11,7.3V6h-1V3h4v3h-1v1.3l3.8,2.3C16.9,9.7,17,9.8,17,10H7C7,9.8,7.1,9.7,7.2,9.6z M16.5,21
+		h-9C7.2,21,7,20.8,7,20.5V11h10v9.5C17,20.8,16.8,21,16.5,21z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+        Single Sample
+      </awf-button>
+      <awf-button>
+        <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;three-samples&quot;&gt;
+&lt;g transform=&quot;scale(0.7) translate(-5 -2)&quot;&gt;
+	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.4,8.8L14.5,7H15V2H9v5h0.5L6.6,8.8C6.2,9.1,6,9.5,6,10v10.5C6,21.3,6.7,22,7.5,22h9c0.8,0,1.5-0.7,1.5-1.5V10
+		C18,9.5,17.8,9.1,17.4,8.8z M7.2,9.6L11,7.3V6h-1V3h4v3h-1v1.3l3.8,2.3C16.9,9.7,17,9.8,17,10H7C7,9.8,7.1,9.7,7.2,9.6z M16.5,21
+		h-9C7.2,21,7,20.8,7,20.5V11h10v9.5C17,20.8,16.8,21,16.5,21z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.4,8.8L14.5,7H15V2H9v5h0.5L6.6,8.8C6.2,9.1,6,9.5,6,10v10.5C6,21.3,6.7,22,7.5,22h9c0.8,0,1.5-0.7,1.5-1.5V10
+		C18,9.5,17.8,9.1,17.4,8.8z M7.2,9.6L11,7.3V6h-1V3h4v3h-1v1.3l3.8,2.3C16.9,9.7,17,9.8,17,10H7C7,9.8,7.1,9.7,7.2,9.6z M16.5,21
+		h-9C7.2,21,7,20.8,7,20.5V11h10v9.5C17,20.8,16.8,21,16.5,21z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
 
-  <div class="top-controls">
-    <awf-input style="--awf-input-width: 180px;">
-      <awf-text slot="label" for="username-input">Username</awf-text>
-      <input id="username-input" type="text" autocomplete="username" class="input-field" [(ngModel)]="username" />
-    </awf-input>
+  &lt;!-- Right vial --&gt;
+  &lt;g transform=&quot;scale(0.7) translate(15 -2)&quot;&gt;
+	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.4,8.8L14.5,7H15V2H9v5h0.5L6.6,8.8C6.2,9.1,6,9.5,6,10v10.5C6,21.3,6.7,22,7.5,22h9c0.8,0,1.5-0.7,1.5-1.5V10
+		C18,9.5,17.8,9.1,17.4,8.8z M7.2,9.6L11,7.3V6h-1V3h4v3h-1v1.3l3.8,2.3C16.9,9.7,17,9.8,17,10H7C7,9.8,7.1,9.7,7.2,9.6z M16.5,21
+		h-9C7.2,21,7,20.8,7,20.5V11h10v9.5C17,20.8,16.8,21,16.5,21z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+        Sequence
+      </awf-button>
+      <awf-button>
+        <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;zoom-search&quot;&gt;
+&lt;path d=&quot;M21.4,20.6l-4.5-4.5c1.3-1.5,2.2-3.5,2.2-5.6C19,5.8,15.2,2,10.5,2S2,5.8,2,10.5S5.8,19,10.5,19c2.2,0,4.1-0.8,5.6-2.2
+	l4.5,4.5L21.4,20.6z M3,10.5C3,6.4,6.4,3,10.5,3S18,6.4,18,10.5S14.6,18,10.5,18S3,14.6,3,10.5z&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;"></awf-icon>
+        Search
+      </awf-button>
+      <hr slot="end">
+      <awf-button slot="end">
+        <awf-icon id="notification_icon" raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;notifications&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M13.5,21h-4C9.2,21,9,21.2,9,21.5S9.2,22,9.5,22h4c0.3,0,0.5-0.2,0.5-0.5S13.8,21,13.5,21z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.7,12.7c-0.7-0.7-1.3-1.3-1.4-2.4C15.8,5.4,14.4,4.1,12,4V2.5C12,2.2,11.8,2,11.5,2S11,2.2,11,2.5V4
+		c-2.4,0.1-3.8,1.4-4.3,6.3C6.6,11.5,6,12,5.3,12.7c-1,1-2.3,2.3-2.3,5.8V19h17v-0.5C20,15,18.7,13.8,17.7,12.7z M4,18
+		c0.1-2.7,1.1-3.6,2-4.6c0.8-0.8,1.5-1.5,1.7-3.1C8.2,5.4,9.5,5,11.5,5l0,0l0,0c1.9,0,3.3,0.4,3.8,5.4c0.1,1.5,0.9,2.3,1.7,3.1
+		c0.9,0.9,1.9,1.9,2,4.6H4V18z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+        <awf-notification-bubble slot="icon" for="notification_icon" value="100"></awf-notification-bubble>
+      </awf-button>
+      <awf-button slot="end">
+        <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;lock-locked&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M17.5,9H17V6.5C17,4,14.5,2,11.5,2S6,4,6,6.5V9H5.5C4.1,9,3,10.1,3,11.5V22h17V11.5C20,10.1,18.9,9,17.5,9z M7,6.5
+		C7,4.6,9,3,11.5,3S16,4.6,16,6.5V9H7V6.5z M19,21H4v-9.5C4,10.7,4.7,10,5.5,10H6h1h9h1h0.5c0.8,0,1.5,0.7,1.5,1.5V21z&quot;&gt;&lt;/path&gt;
+	&lt;rect x=&quot;11&quot; y=&quot;13&quot; width=&quot;1&quot; height=&quot;5&quot;&gt;&lt;/rect&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+      </awf-button>
+      <awf-button id="user-profile" slot="end">
+        <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; enable-background=&quot;new 0 0 24 24&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;user&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M12,14c2.6,0,3.5-3.1,3.5-5.1H15l0.5-0.1C15.6,6.8,14,5.1,12,5l-0.2,0c-2,0.2-3.4,1.9-3.3,3.8C8.6,11.3,9.6,14,12,14z
+		 M11.9,6L11.9,6c1.5,0.1,2.7,1.3,2.6,2.8l0,0c0,1.6-0.7,4.1-2.5,4.1c-1.8,0-2.4-2.5-2.4-4.2C9.4,7.4,10.5,6.1,11.9,6z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M18.8,18.9c-0.6-1.9-1.9-3.5-3.7-4.4l-0.4-0.2l-0.3,0.3c0,0-0.6,0.8-2.5,0.8c-0.9,0-1.8-0.3-2.4-0.9l-0.3-0.2L9,14.5
+		c-1.8,0.9-3.2,2.5-3.8,4.4l-0.1,0.3l0.2,0.2C7.2,21.2,9.6,22,12,22c2.4,0,4.8-0.9,6.7-2.6l0.2-0.2L18.8,18.9z M6.2,18.9
+		c0.5-1.4,1.6-2.6,2.9-3.4c0.8,0.6,1.8,0.9,2.9,0.9c1.6,0,2.5-0.5,2.9-0.9c1.3,0.8,2.3,2,2.8,3.4C14.4,21.7,9.6,21.7,6.2,18.9z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+      </awf-button>
+      <awf-tooltip trigger="user-profile" placement="auto" tip="" message="User profile"></awf-tooltip>
+  </awf-navigation-bar>
 
-    <awf-input-password style="--awf-input-width: 180px;">
-      <awf-text slot="label" for="password-input">Password</awf-text>
-      <input id="password-input" type="password" autocomplete="current-password" class="input-field" [(ngModel)]="password" />
-    </awf-input-password>
 
-    <awf-banner open="" header="{{ message }}">
+  <div class="container">
+    <ng-container *ngIf="activeTab === 'home'">
 
-    </awf-banner>
-    <!--<span class="message">{{ message }}</span>-->
-  </div>
+      <!--<ag-login-page [productName]="productName" [productIcon]="productIcon"
+                     [loginPrompt]="loginPrompt" [loginFooterText]="loginFooterText"
+                     [validDomains]="validDomains"
+                     (changePasswordAction)="changePasswordAction($event)"
+                     (closeAction)="closeAction($event)"
+                     (loginAction)="loginAction($event)"></ag-login-page>-->
 
-  <div class="main-grid">
-    <!-- Left: instrument list component -->
-    <app-instrument-list [instruments]="instruments" (connect)="connectInstrument($event)"></app-instrument-list>
+      <awf-title-bar header="Login to Control Panel">
 
-    <!-- Right: run panel component -->
-    <app-run-panel [selectedInstrument]="selectedInstrument"
-                   [initialResultPath]="resultPath"
-                   [initialResultFileName]="resultFileName"
-                   [initialAcquisitionMethod]="acquisitionMethod"
-                   [runInProgress]="runInProgress"
-                   [token]="token"
-                   (runSubmit)="onRunSubmit($event)">
-    </app-run-panel>
+      </awf-title-bar>
+
+      <div class="top-controls">
+        <awf-input style="--awf-input-width: 180px;">
+          <awf-text slot="label" for="username-input">Username</awf-text>
+          <input id="username-input" type="text" autocomplete="username" class="input-field" [(ngModel)]="username" />
+        </awf-input>
+
+        <awf-input-password style="--awf-input-width: 180px;">
+          <awf-text slot="label" for="password-input">Password</awf-text>
+          <input id="password-input" type="password" autocomplete="current-password" class="input-field" [(ngModel)]="password" />
+        </awf-input-password>
+
+        <awf-button id="btnStart" (click)="start()" [disabled]="isLoading" style="margin-top: 12px;">
+          {{ isLoading ? 'Loading...' : 'Login' }}
+        </awf-button>
+        <awf-banner open="" header="{{ message }}">
+
+        </awf-banner>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="activeTab === 'projects'">
+      <div class="main-grid">
+        <!-- Left: project list component -->
+        <app-project-list [projects]="projects" [selectedProject]="selectedProject" (select)="selectProject($event)"></app-project-list>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="activeTab === 'instruments'">
+      <div class="main-grid">
+        <!-- Left: instrument list component -->
+        <app-instrument-list [instruments]="instruments"
+                             [selectedProject]="selectedProject"
+                             (connect)="connectInstrument($event)">
+        </app-instrument-list>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="activeTab === 'status'">
+      <div class="main-grid">
+        <app-status></app-status>
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="activeTab === 'singlesample'">
+
+      <div class="main-grid">
+
+        <!-- Right: run panel component -->
+        <app-run-panel [selectedInstrument]="selectedInstrument"
+                       [initialResultPath]="resultPath"
+                       [initialResultFileName]="resultFileName"
+                       [initialAcquisitionMethod]="acquisitionMethod"
+                       [runInProgress]="runInProgress"
+                       [token]="token"
+                       (runSubmit)="onRunSubmit($event)">
+        </app-run-panel>
+      </div>
+    </ng-container>
+
   </div>
 </div>

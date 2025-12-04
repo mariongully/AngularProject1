@@ -1,0 +1,22 @@
+<div class="left-column">
+  <h3>Available projects:</h3>
+
+  <div *ngIf="!selectedProject" class="no-selection">
+    Select a project.
+  </div>
+
+  <div *ngFor="let project of projects"
+       class="project-card"
+       [class.selected]="isSelected(project)"
+       (click)="onSelect(project)"
+       (keydown.enter)="onSelect(project)"
+       role="button"
+       tabindex="0"
+       [attr.aria-selected]="isSelected(project)">
+    <div class="project-left">
+      <div class="project-meta">
+        <div class="project-name">{{ project.name }}</div>
+      </div>
+    </div>
+  </div>
+</div>

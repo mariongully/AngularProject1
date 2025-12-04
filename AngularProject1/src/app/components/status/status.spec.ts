@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Instrument } from './instrument-list';
+import { StatusComponent } from './status';
 
-describe('Instrument', () => {
-  let component: Instrument;
-  let fixture: ComponentFixture<Instrument>;
+describe('Status', () => {
+  let component: StatusComponent;
+  let fixture: ComponentFixture<StatusComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Instrument]
+      declarations: [StatusComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Instrument);
+    fixture = TestBed.createComponent(StatusComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

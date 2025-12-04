@@ -1,0 +1,52 @@
+<div class="status-grid">
+  <div class="status-left">
+    <h2>Instrument status</h2>
+
+    <awf-widget-layout columns="2" rows="3">
+      <awf-widget-container column="1" columnspan="2" header="Data Player" row="1" rowspan="1" status="Ready">
+        <div slot="context">
+          <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;sample-status-indicator-success-filled-green&quot;&gt;
+&lt;path style=&quot;fill:#75C335;&quot; d=&quot;M12,2C6.5,2,2,6.5,2,12c0,5.5,4.5,10,10,10c5.5,0,10-4.5,10-10C22,6.5,17.5,2,12,2z M10.5,16.3
+	l-3.4-3.4l0.7-0.7l2.7,2.7l6.7-6.7l0.7,0.7L10.5,16.3z&quot;&gt;&lt;/path&gt;
+&lt;/svg&gt;"></awf-icon>Idle
+        </div>
+      </awf-widget-container>
+
+    </awf-widget-layout>
+  </div>
+
+  <div class="status-right">
+    <h2>Run queue</h2>
+
+    <awf-widget-layout columns="1" rows="1">
+      <awf-widget-container noheader columnspan="2">
+        <awf-tab-set>
+          <awf-tab slot="tab" value="active">
+            <awf-icon slot="prefix" raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;assay-media&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.4,8.8L14.5,7H15V2H9v5h0.5L6.6,8.8C6.2,9.1,6,9.5,6,10v10.5C6,21.3,6.7,22,7.5,22h9c0.8,0,1.5-0.7,1.5-1.5V10
+		C18,9.5,17.8,9.1,17.4,8.8z M7.2,9.6L11,7.3V6h-1V3h4v3h-1v1.3l3.8,2.3C16.9,9.7,17,9.8,17,10H7C7,9.8,7.1,9.7,7.2,9.6z M16.5,21
+		h-9C7.2,21,7,20.8,7,20.5V11h10v9.5C17,20.8,16.8,21,16.5,21z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+            <label>Active</label>
+
+          </awf-tab>
+          <awf-tab slot="tab" value="history">
+            <awf-icon slot="prefix" raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;assay-media&quot;&gt;
+&lt;g&gt;
+	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
+	&lt;path d=&quot;M17.4,8.8L14.5,7H15V2H9v5h0.5L6.6,8.8C6.2,9.1,6,9.5,6,10v10.5C6,21.3,6.7,22,7.5,22h9c0.8,0,1.5-0.7,1.5-1.5V10
+		C18,9.5,17.8,9.1,17.4,8.8z M7.2,9.6L11,7.3V6h-1V3h4v3h-1v1.3l3.8,2.3C16.9,9.7,17,9.8,17,10H7C7,9.8,7.1,9.7,7.2,9.6z M16.5,21
+		h-9C7.2,21,7,20.8,7,20.5V11h10v9.5C17,20.8,16.8,21,16.5,21z&quot;&gt;&lt;/path&gt;
+&lt;/g&gt;
+&lt;/svg&gt;"></awf-icon>
+            <label>History</label>
+          </awf-tab>
+          </awf-tab-set>
+</awf-widget-container>
+
+    </awf-widget-layout>
+  </div>
+</div>

@@ -1,12 +1,12 @@
 <div class="right-column">
   <h3>Run submission</h3>
 
-  <div *ngIf="!selectedInstrument" class="no-selection">
+  <!--<div  class="no-selection">
     Select and connect an instrument on the left to display the run form.
-  </div>
+  </div>-->
 
-  <div *ngIf="selectedInstrument" class="run-panel">
-    <div class="selected-title">Instrument: {{ selectedInstrument.name }}</div>
+  <div class="run-panel">
+    <!--<div class="selected-title">Instrument: {{ selectedInstrument.name }}</div>-->
 
     <awf-input style="--awf-input-width: 100%;">
       <awf-text slot="label" for="resultpath-input">Result path</awf-text>
@@ -24,9 +24,10 @@
     </awf-input>
 
     <div class="run-actions">
-      <awf-button id="btnRun" label="Run" (click)="submit()" [disabled]="runInProgress">
+      <awf-button id="btnRun" label="Run" (click)="submit()" [disabled]="!selectedInstrument||runInProgress">
         {{ runInProgress ? 'Running...' : 'RUN' }}
       </awf-button>
+      <awf-tooltip message="Select and connect an instrument to run a sample" placement="auto" trigger="btnRun"></awf-tooltip>
     </div>
   </div>
 </div>

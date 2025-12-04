@@ -1,0 +1,28 @@
+.instrument-list {
+  margin-top: 2rem;
+}
+
+.instrument-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f2f2f2;
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 5px;
+}
+
+.instrument-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.instrument-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.instrument-name {
+  font-weight: 500;
+}
