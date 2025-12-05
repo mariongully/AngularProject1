@@ -10,12 +10,6 @@
   align-items: center;
   gap: 1rem;
   display: list-item;
-  width:180px;
-}
-
-.start-btn {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
 }
 
 .message {
@@ -101,4 +95,63 @@
 .selected-title {
   font-weight: 600;
   margin-bottom: 0.5rem;
+}
+
+.container-sidepanel {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  padding: 8px;
+  margin: 0;
+}
+
+.customContent {
+  display: inline;
+}
+
+[slot='context'] {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+[side-panel-trigger] {
+  margin-right: 20px;
+}
+
+.footer {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.footerIcon {
+  display: flex;
+}
+
+.footerIconFirst {
+  margin-right: 8px;
+}
+
+.footerIconLast {
+  margin-left: auto;
+}
+
+.awf-side-panel-blue {
+  --awf-sidepanel-header-background-color: var(--at-blue-luminous);
+  --awf-sidepanel-footer-background-color: var(--at-blue-luminous);
+}
+
+.awf-side-panel-header-blue {
+  --awf-sidepanel-header-background-color: var(--at-blue-luminous);
+}
+
+.awf-side-panel-footer-blue {
+  --awf-sidepanel-footer-background-color: var(--at-blue-luminous);
 }

@@ -44,7 +44,13 @@
 &lt;/svg&gt;"></awf-icon>
             <label>History</label>
           </awf-tab>
-          </awf-tab-set>
+          <awf-tab-panel slot="panel" value="active">
+            <app-run-queue *ngIf="selectedInstrument"
+                           [globalId]="selectedInstrument!.globalId"
+                           [token]="token">
+            </app-run-queue>
+          </awf-tab-panel>
+        </awf-tab-set>
 </awf-widget-container>
 
     </awf-widget-layout>

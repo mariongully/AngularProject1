@@ -24,16 +24,12 @@
     </awf-input>
 
     <div class="run-actions">
-      <awf-button id="btnRun" label="Run" (click)="submit()" [disabled]="!selectedInstrument||runInProgress">
+      <awf-button id="btnRun" label="Run" (click)="submit()" [disabled]="runInProgress">
         {{ runInProgress ? 'Running...' : 'RUN' }}
       </awf-button>
       <awf-tooltip message="Select and connect an instrument to run a sample" placement="auto" trigger="btnRun"></awf-tooltip>
     </div>
   </div>
 </div>
-  <!-- Run queue child component -->
-  <app-run-queue *ngIf="selectedInstrument"
-                 [globalId]="selectedInstrument!.globalId"
-                 [token]="token">
-  </app-run-queue>
+
 
