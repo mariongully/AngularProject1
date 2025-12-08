@@ -1,10 +1,14 @@
-<div class="left-column">
+<div class="main-project">
   <h3>Available projects:</h3>
 
-  <div *ngIf="!selectedProject" class="no-selection">
-    Select a project.
+  <div class="no-selection">
+    <!--*ngIf="!selectedProject"-->
+    Select a project...
+    <!--<ag-project-selection [projects]="projects"></ag-project-selection>-->
+
   </div>
 
+  <!--(projectSelected)="isSelected($event)"-->
   <div *ngFor="let project of projects"
        class="project-card"
        [class.selected]="isSelected(project)"

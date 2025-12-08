@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Instrument } from '../instrument-list/instrument-list';
+import { Project } from '../project-list/project-list';
 
 export interface RunForm {
   resultPath: string;
@@ -14,17 +15,15 @@ export interface RunForm {
   styleUrls: ['../test-api/test-api.css']
 })
 export class RunPanelComponent implements OnChanges {
+  @Input() selectedProject: Project | null = null;
   @Input() selectedInstrument: Instrument | null = null;
-  @Input() initialResultPath = 'C:\\CDSProjects\\DataPlayerProject\\Results';
-  @Input() initialResultFileName = 'test1';
-  @Input() initialAcquisitionMethod = 'C:\\CDSProjects\\DataPlayerProject\\Methods\\dp.amx';
-  @Input() runInProgress = false;
   @Input() token = '';
   @Output() runSubmit = new EventEmitter<RunForm>();
 
-  resultPath = this.initialResultPath;
-  resultFileName = this.initialResultFileName;
-  acquisitionMethod = this.initialAcquisitionMethod;
+  runInProgress = false;;
+  resultPath = 'C:\\CDSProjects\\' + this.selectedProject?.name + '\\Results';
+  resultFileName = 'test1';
+  acquisitionMethod = 'C:\\CDSProjects\\' + this.selectedProject?.name + '\\Methods\\dp.amx';
 
   ngOnChanges(changes: SimpleChanges): void {
     // initialize local fields when parent provides defaults

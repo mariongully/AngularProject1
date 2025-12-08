@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class InstrumentService {
-  private instrumentsUrl = 'https://localhost:52088/openlab/olss/v2.0/Instruments';
+  private instrumentsUrl = 'https://localhost:52088/openlab/olss/v3.0/instruments';
   private projectUrl = 'https://localhost:52088/openlab/olss/v4.0/projects';
   private initializeUrl = 'https://localhost:52088/openlab/acquisition/v1/instruments';
 
@@ -54,5 +54,13 @@ export class InstrumentService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(this.projectUrl, { headers });
   }
+
+  getInstrumentConfigurationById(id: number, token: string): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const url = `${this.instrumentsUrl}/${id}/driveritems?name=configuration`;
+    return this.http.get(url, { headers });
+  }
+
+
 
 }

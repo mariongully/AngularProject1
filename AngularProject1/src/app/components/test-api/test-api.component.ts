@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { InstrumentService } from '../../services/instrument.service';
-import '@agilent/awf-wc/button';
-import '@agilent/awf-wc/input-text';
-import '@agilent/awf-wc/title-bar';
-import '@agilent/awf-wc/input-password';
-import '@agilent/awf-wc/banner';
+//import '@agilent/awf-wc/button';
+//import '@agilent/awf-wc/input-text';
+//import '@agilent/awf-wc/title-bar';
+//import '@agilent/awf-wc/input-password';
+//import '@agilent/awf-wc/banner';
+
 //import '@agilent/ui-template/login-page';
 import { RunForm } from '../run-panel/run-panel';
 import { Instrument } from '../instrument-list/instrument-list';
 import { Project } from '../project-list/project-list';
+import { extractAllFirstDisplayNames } from './xml-utils';
 
 @Component({
   selector: 'app-test-api',
@@ -23,6 +25,8 @@ export class TestApi {
   token = '';
   instruments: Instrument[] = [];
   projects: Project[] = [];
+  modules: string[] = [];
+  //modules: Array<{ displayName: string }> = [];
 
   // Credentials editable in the UI, default values preserved
   username = 'admin';
@@ -33,9 +37,6 @@ export class TestApi {
   selectedProject: Project | null = null;
 
   // Default run form values (passed to RunPanel)
-  resultFileName = 'test1';
-  acquisitionMethod = 'C:\\CDSProjects\\DataPlayerProject\\Methods\\dp.amx';
-  resultPath = 'C:\\CDSProjects\\DataPlayerProject\\Results';
   runInProgress = false;
   activeTab = 'home';
 
@@ -99,12 +100,12 @@ export class TestApi {
               globalId: i.globalId,
             }));
           },
-        error: (err) => {
-          this.message.push('Error fetching projects.');
+          error: (err) => {
+            this.message.push('Error fetching projects.');
             this.isLoading = false;
             console.error(err);
           }
-      });
+        });
 
         this.message.push('Connected. Retrieving instruments...');
 
@@ -198,8 +199,9 @@ export class TestApi {
 
     this.instrumentService.initializeInstrument(instrument.globalId, this.token).subscribe({
       next: (res) => {
-        this.getStatusById(instrument);
         console.log('Initialize response:', res);
+        this.getStatusById(instrument);
+        this.getConfigurationById(instrument);
       },
       error: (err) => {
         instrument.stateLoading = false;
@@ -209,32 +211,53 @@ export class TestApi {
     });
   }
 
+  private getConfigurationById(instrument: Instrument) {
+    if (typeof instrument.id === 'number') {
+      this.instrumentService.getInstrumentConfigurationById(instrument.id, this.token).subscribe({
+        next: (res) => {
+          this.modules = extractAllFirstDisplayNames(res.textData);
+          //TODO
+          if (this.modules.length == 0) {
+            this.modules.push('Data Player');
+          }
+          this.message.push(this.modules.toString() + ' modules found in configuration.');
+          console.log('Configuration:', res);
+
+        },
+        error: (err) => {
+          console.error(err);
+
+        }
+      });
+    }
+  }
+
   private getStatusById(instrument: Instrument) {
 
-  // after initialize prefer batch endpoint using numeric id
-  if (typeof instrument.id === 'number') {
-    this.instrumentService.getInstrumentsStatusByIds([instrument.id], this.token).subscribe({
-      next: (statusArray: any) => {
-        if (Array.isArray(statusArray) && statusArray.length > 0) {
-          const status = statusArray[0];
-          instrument.instrumentState = status?.hardwareStatus ?? status?.instrumentState ?? 'Unknown';
-          instrument.stateLoading = false;
-          this.message.push(`Status updated for "${instrument.name}": ${instrument.instrumentState}`);
-        } else if (statusArray && (statusArray.hardwareStatus || statusArray.instrumentState || statusArray.state)) {
-          instrument.instrumentState = (statusArray.hardwareStatus ?? statusArray.instrumentState ?? statusArray.state) ?? 'Unknown';
-          instrument.stateLoading = false;
-          this.message.push(`Status updated for "${instrument.name}": ${instrument.instrumentState}`);
-        } else {
+    // after initialize prefer batch endpoint using numeric id
+    if (typeof instrument.id === 'number') {
+      this.instrumentService.getInstrumentsStatusByIds([instrument.id], this.token).subscribe({
+        next: (statusArray: any) => {
+          if (Array.isArray(statusArray) && statusArray.length > 0) {
+            const status = statusArray[0];
+            instrument.instrumentState = status?.hardwareStatus ?? status?.instrumentState ?? 'Unknown';
+            instrument.stateLoading = false;
+            this.message.push(`Status updated for "${instrument.name}": ${instrument.instrumentState}`);
+          } else if (statusArray && (statusArray.hardwareStatus || statusArray.instrumentState || statusArray.state)) {
+            instrument.instrumentState = (statusArray.hardwareStatus ?? statusArray.instrumentState ?? statusArray.state) ?? 'Unknown';
+            instrument.stateLoading = false;
+            this.message.push(`Status updated for "${instrument.name}": ${instrument.instrumentState}`);
+          } else {
+            this.fallbackStatusByGlobalId(instrument);
+          }
+          this.selectedInstrument = instrument;
+        },
+        error: (err) => {
+          console.error('Batch status after initialize failed, falling back', err);
           this.fallbackStatusByGlobalId(instrument);
+          this.selectedInstrument = instrument;
         }
-        this.selectedInstrument = instrument;
-      },
-      error: (err) => {
-        console.error('Batch status after initialize failed, falling back', err);
-        this.fallbackStatusByGlobalId(instrument);
-        this.selectedInstrument = instrument;
-      }
-    });
+      });
     } else {
       this.fallbackStatusByGlobalId(instrument);
       this.selectedInstrument = instrument;

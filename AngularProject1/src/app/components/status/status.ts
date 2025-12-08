@@ -9,5 +9,6 @@ import { Instrument } from '../instrument-list/instrument-list';
 })
 export class StatusComponent {
   @Input() selectedInstrument: Instrument | null = null;
+  @Input() modules: string[] = [];
   @Input() token = '';
 }

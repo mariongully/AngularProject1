@@ -22,24 +22,25 @@ awf-widget-container {
 /* New layout: 2 columns, left = status, right = run queue */
 .status-grid {
   display: grid;
-  grid-template-columns: 1fr 800px; /* tweak 380px to desired run-queue width */
+  grid-template-columns: 1fr 1fr;
   gap: 16px;
   align-items: start;
-  margin-top: 8px;
   justify-items: stretch;
   margin-top: 8px;
+  /*width: 100%;*/
+  /*box-sizing: border-box;*/
   justify-content: start; /* force grid to align to left */
 }
 
-.status-left {
-  min-width: 500; /* allow children to shrink inside grid */
+/*.status-left {
+  min-width: 0;*/ /* allow children to shrink inside grid */
+  /*height: auto;
 }
 
 .status-right {
-  min-width: 1000;
-  /*max-height: 75vh;*/ /* limit height so right column can scroll if long */
-  overflow: auto;
-}
+  min-width: 0;
+  height: auto;
+}*/
 
 body {
   position: absolute;

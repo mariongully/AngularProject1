@@ -117,7 +117,7 @@
 		c0.9,0.9,1.9,1.9,2,4.6H4V18z&quot;&gt;&lt;/path&gt;
 &lt;/g&gt;
 &lt;/svg&gt;"></awf-icon>
-        <awf-notification-bubble slot="icon" for="notification_icon" value="3"></awf-notification-bubble>
+        <awf-notification-bubble slot="icon" for="notification_icon" value="{{message.length}}"></awf-notification-bubble>
       </awf-button>
       <awf-button slot="end">
         <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;lock-locked&quot;&gt;
@@ -153,39 +153,43 @@
                  [isChangePassword]="isChangePassword"
                  (loginAction)="loginAction($event)">
   </ag-login-page>-->
+      <div class="main-grid">
+        <div class="left-column-login">
 
-      <awf-launch-icon mode="squircle" iconraw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;star&quot;&gt;
+          <awf-launch-icon mode="squircle" iconraw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;star&quot;&gt;
 &lt;path d=&quot;M21,9h-7l-2.5-6L9,9H2l6,4.5L5,21l6.5-5l6.5,5l-3-7.5L21,9z M15.7,18l-4.2-3.2L7.3,18l1.9-4.8L5,10h4.7l1.8-4.4l1.8,4.4H18
 	l-4.2,3.2L15.7,18z&quot;&gt;&lt;/path&gt;
 &lt;/svg&gt;" iconsrc=""></awf-launch-icon>
-      
-      <awf-title-bar header="Login to Control Panel">
 
-      </awf-title-bar>
 
-      <div class="left-column">
-        <awf-input style="--awf-input-width: 180px;">
-          <awf-text slot="label" for="username-input">Username</awf-text>
-          <input id="username-input" type="text" autocomplete="username" class="input-field" [(ngModel)]="username" />
-        </awf-input>
 
-        <awf-input-password style="--awf-input-width: 180px;">
-          <awf-text slot="label" for="password-input">Password</awf-text>
-          <input id="password-input" type="password" autocomplete="current-password" class="input-field" [(ngModel)]="password" />
-        </awf-input-password>
+          <awf-title-bar header="Login to Control Panel">
 
-        <awf-button id="btnStart" (click)="start()" [disabled]="isLoading" style="margin-top: 12px;">
-          {{ isLoading ? 'Loading...' : 'Login' }}
-        </awf-button>
+          </awf-title-bar>
+          <awf-input>
+            <awf-text slot="label" for="username-input">Username</awf-text>
+            <input id="username-input" type="text" autocomplete="username" [(ngModel)]="username" />
+          </awf-input>
 
+          <awf-input>
+            <awf-text slot="label" for="password-input">Password</awf-text>
+            <input id="password-input" type="password" autocomplete="current-password" [(ngModel)]="password" />
+          </awf-input>
+
+          <awf-button id="btnStart" (click)="start()" [disabled]="isLoading" style="margin-top: 12px;">
+            {{ isLoading ? 'Loading...' : 'Login' }}
+          </awf-button>
+
+        </div>
+
+        <div class="right-column">
+          <awf-banner open=""*ngFor="let msg of message" header="{{  msg }}">
+            <!--message[message.length - 1]-->
+          </awf-banner>
+        </div>
       </div>
 
-      <div class="right-column">
-        <awf-banner open="" header="{{  message[message.length - 1] }}">
-        </awf-banner>
-      </div>
     </ng-container>
-
     <ng-container *ngIf="activeTab === 'projects'">
       <div class="main-grid">
         <!-- Left: project list component -->
@@ -208,6 +212,7 @@
     <ng-container *ngIf="activeTab === 'status'">
       <div class="main-grid">
         <app-status [selectedInstrument]="selectedInstrument"
+                    [modules]="modules"
                     [token]="token"></app-status>
       </div>
 
@@ -218,11 +223,8 @@
       <div class="main-grid">
 
         <!-- Right: run panel component -->
-        <app-run-panel [selectedInstrument]="selectedInstrument"
-                       [initialResultPath]="resultPath"
-                       [initialResultFileName]="resultFileName"
-                       [initialAcquisitionMethod]="acquisitionMethod"
-                       [runInProgress]="runInProgress"
+        <app-run-panel [selectedProject]="selectedProject"
+                       [selectedInstrument]="selectedInstrument"
                        [token]="token"
                        (runSubmit)="onRunSubmit($event)">
         </app-run-panel>
@@ -250,10 +252,6 @@
         <div slot="content" class="content">
           <p>
           <p *ngFor="let msg of message">{{ msg }}</p>
-          <hr>
-          <p>
-            message 2
-          </p>
         </div>
 
       </awf-sidepanel>

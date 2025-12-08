@@ -10,7 +10,7 @@ export interface Project {
   selector: 'app-project-list',
   standalone: false,
   templateUrl: './project-list.html',
-  styleUrls: ['./project-list.css', '../test-api/test-api.css']
+  styleUrls: ['./project-list.css', '../test-api/test-api.css'],
 })
 export class ProjectListComponent {
   @Input() projects: Project[] = [];

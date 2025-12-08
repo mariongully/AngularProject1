@@ -1,3 +1,9 @@
+.main-project {
+  margin-top: 1rem;
+  flex-direction: column; /* empile les enfants verticalement */
+  gap: 1rem;
+}
+
 .instrument-list {
   margin-top: 2rem;
 }
