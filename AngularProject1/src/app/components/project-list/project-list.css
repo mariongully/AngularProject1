@@ -53,3 +53,10 @@
     box-shadow: 0 1px 0 rgba(0,0,0,0.05);
     border-left: 4px solid #0078d4; /* accent color */
   }
+
+
+.selected {
+  border-color: #0078d4;
+  background: #e6f2fb;
+  box-shadow: 0 0 0 2px rgba(0,120,212,0.2) inset;
+}

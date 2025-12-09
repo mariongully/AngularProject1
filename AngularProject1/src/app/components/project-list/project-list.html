@@ -1,15 +1,28 @@
 <div class="main-project">
+
+  <div *ngIf="selectedProject" class="left-column">
+    <h3>Associated project:</h3>
+    <div class="instrument-card">
+      <div class="instrument-left">
+        <div class="instrument-meta">
+          <!--<ag-project-selection [projects]="projects"></ag-project-selection>-->
+          <div class="instrument-name">{{ selectedProject?.name || 'No project selected' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <h3>Available projects:</h3>
 
-  <div class="no-selection">
+  <div class="project-card">
     <!--*ngIf="!selectedProject"-->
     Select a project...
-    <!--<ag-project-selection [projects]="projects"></ag-project-selection>-->
+    <ag-project-selection [projects]="projects" (projectSelected)="projectSelected($event)"></ag-project-selection>
 
   </div>
 
   <!--(projectSelected)="isSelected($event)"-->
-  <div *ngFor="let project of projects"
+  <!--<div *ngFor="let project of projects"
        class="project-card"
        [class.selected]="isSelected(project)"
        (click)="onSelect(project)"
@@ -22,5 +35,5 @@
         <div class="project-name">{{ project.name }}</div>
       </div>
     </div>
-  </div>
+  </div>-->
 </div>

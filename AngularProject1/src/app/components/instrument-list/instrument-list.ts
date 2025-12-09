@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Project } from '../project-list/project-list';
+import { Component, EventEmitter, Input, Output, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+//import { ProjectInfo } from '../project-list/project-list';
+import { CommonModule } from '@angular/common';
+import { ProjectInfo } from '@agilent/ui-element/project-selection';
 
 export interface Instrument {
   id?: number;
@@ -12,14 +14,20 @@ export interface Instrument {
 @Component({
   selector: 'app-instrument-list',
   templateUrl: './instrument-list.html',
-  standalone: false,
-  styleUrls: ['../test-api/test-api.css','instrument-list.css']
+  standalone: true,
+  styleUrls: ['../test-api/test-api.css', 'instrument-list.css'],
+  imports: [
+    CommonModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class InstrumentListComponent {
   @Input() instruments: Instrument[] = [];
   // Accept null from the parent to match TestApi.selectedProject (Project | null)
-  @Input() selectedProject: Project | null = null;
+  @Input() selectedProject: ProjectInfo | null = null;
   @Output() connect = new EventEmitter<Instrument>();
+
+  projects: ProjectInfo[] = [];
 
   // Maps instrumentState string to a CSS class (duplicate small helper for isolation)
   getStateClass(state?: string): string {

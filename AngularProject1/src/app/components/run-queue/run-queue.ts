@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { InstrumentService } from '../../services/instrument.service';
 import { interval, of, Subscription } from 'rxjs';
 import { startWith, switchMap, catchError } from 'rxjs/operators';
@@ -6,8 +7,12 @@ import { startWith, switchMap, catchError } from 'rxjs/operators';
 @Component({
   selector: 'app-run-queue',
   templateUrl: './run-queue.html',
-  standalone: false,
-  styleUrls: ['./run-queue.css', '../test-api/test-api.css']
+  standalone: true,
+  styleUrls: ['./run-queue.css', '../test-api/test-api.css'],
+  imports: [
+    CommonModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class RunQueueComponent implements OnChanges, OnDestroy {
   // Accept undefined as well to match template bindings

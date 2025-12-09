@@ -1,3 +1,4 @@
+
 .container {
   max-width: 1500px;
   margin: auto;
@@ -36,9 +37,9 @@
   padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ececec;
-  display: flex; /* active Flexbox */
+  display: flex;  /*active Flexbox*/ 
   flex-direction: column; /* empile les enfants verticalement */
-  align-items: center; /* centre horizontalement */
+  align-items: normal; /* centre horizontalement */
   gap: 0.5rem; /* espace entre chaque élément */
 }
 

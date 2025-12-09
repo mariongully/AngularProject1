@@ -1,35 +1,59 @@
-<div class="right-column">
-  <h3>Run submission</h3>
-
-  <!--<div  class="no-selection">
-    Select and connect an instrument on the left to display the run form.
-  </div>-->
-
-  <div class="run-panel">
-    <!--<div class="selected-title">Instrument: {{ selectedInstrument.name }}</div>-->
-
-    <awf-input style="--awf-input-width: 100%;">
-      <awf-text slot="label" for="resultpath-input">Result path</awf-text>
-      <input id="resultpath-input" type="text" class="input-field" [(ngModel)]="resultPath" />
-    </awf-input>
-
-    <awf-input style="--awf-input-width: 100%;">
-      <awf-text slot="label" for="resultfile-input">Result file name</awf-text>
-      <input id="resultfile-input" type="text" class="input-field" [(ngModel)]="resultFileName" />
-    </awf-input>
-
-    <awf-input style="--awf-input-width: 100%;">
-      <awf-text slot="label" for="acqmethod-input">Acquisition method (path)</awf-text>
-      <input id="acqmethod-input" type="text" class="input-field" [(ngModel)]="acquisitionMethod" />
-    </awf-input>
-
-    <div class="run-actions">
-      <awf-button id="btnRun" label="Run" (click)="submit()" [disabled]="runInProgress">
-        {{ runInProgress ? 'Running...' : 'RUN' }}
-      </awf-button>
-      <awf-tooltip message="Select and connect an instrument to run a sample" placement="auto" trigger="btnRun"></awf-tooltip>
+<div class="left-column">
+  <h3>Associated project:</h3>
+  <div class="instrument-card">
+    <div class="instrument-left">
+      <div class="instrument-meta">
+        <!--<ag-project-selection [projects]="projects"></ag-project-selection>-->
+        <div class="instrument-name">{{ selectedProject?.name || 'No project selected' }}</div>
+      </div>
     </div>
   </div>
-</div>
+  </div>
+  <div class="left-column">
+    <h3>Associated instrument:</h3>
+
+    <div *ngIf="selectedInstrument" class="instrument-card">
+      <div class="instrument-left">
+        <span class="state-square" [ngClass]="getStateClass(selectedInstrument?.instrumentState)" title="{{selectedInstrument?.instrumentState}}"></span>
+        <div class="instrument-meta">
+          <div class="instrument-name">{{ selectedInstrument?.name }}</div>
+          <small class="instrument-state-text" *ngIf="!selectedInstrument?.stateLoading"> {{ selectedInstrument?.instrumentState }}</small>
+          <small class="instrument-state-text" *ngIf="selectedInstrument?.stateLoading"> (loading...) </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-column">
+    <h3>Run submission</h3>
+
+    <div class="run-panel">
+
+      <awf-input-text style="--awf-input-width: 100%;">
+        <label slot="label" for="resultpath-input">Result path</label>
+        <input id="resultpath-input" type="text" class="input-field" value="{{resultPath}}" />
+      </awf-input-text>
+
+      <awf-input-text style="--awf-input-width: 100%;">
+        <label slot="label" for="resultfile-input">Result file name</label>
+        <input id="resultfile-input" type="text" class="input-field" value="{{resultFileName}}" />
+      </awf-input-text>
+
+      <awf-input-text style="--awf-input-width: 100%;">
+        <label slot="label" for="acqmethod-input">Acquisition method (*.amx)</label>
+        <input id="acqmethod-input" type="text" class="input-field" value="{{acquisitionMethod}}" [required]=true />
+      </awf-input-text>
+
+      <ag-file-selector [label]="AcquisitionMethod"
+                        [filteredTypes]="filteredTypesAcqMethod"></ag-file-selector>
+
+      <div class="run-actions">
+        <awf-button id="btnRun" label="Run" (click)="submit()" [disabled]="runInProgress">
+          {{ runInProgress ? 'Running...' : 'RUN' }}
+        </awf-button>
+        <awf-tooltip message="Select and connect an instrument to run a sample" placement="auto" trigger="btnRun"></awf-tooltip>
+      </div>
+    </div>
+  </div>
 
 

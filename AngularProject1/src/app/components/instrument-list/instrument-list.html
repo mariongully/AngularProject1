@@ -1,8 +1,15 @@
 <div class="main-instrument">
   <div class="left-column">
     <h3>Associated project:</h3>
-    <awf-text>{{ selectedProject?.name || 'No project selected' }}</awf-text>
+    <div class="instrument-card">
+      <div class="instrument-left">
+        <div class="instrument-meta">
+          <!--<ag-project-selection [projects]="projects"></ag-project-selection>-->
+          <div class="instrument-name">{{ selectedProject?.name || 'No project selected' }}</div>
+        </div>
+      </div>
     </div>
+  </div>
     <div class="left-column">
       <h3>Available instruments:</h3>
 

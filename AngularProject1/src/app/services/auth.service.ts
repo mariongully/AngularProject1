@@ -9,10 +9,10 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   // Accept optional username/password; keep existing defaults when not provided
-  login(username: string = 'admin', password: string = 'admin'): Observable<any> {
+  login(username: string = 'admin', password: string = 'admin', domain : string = 'AGILENT'): Observable<any> {
     const body = {
       username,
-      domain: 'MYDOMAIN',
+      domain: domain,
       password,
       userApplication: 'olcds',
       clientDevice: 'PC02'

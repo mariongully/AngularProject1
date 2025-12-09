@@ -19,14 +19,14 @@
       <!--<awf-icon src="assets/Acquisition_System_Launcher_24.svg"></awf-icon>-->
       Agilent OpenLab
     </awf-button>
-    <awf-button (click)="setActive('home')" [class.active]="activeTab === 'home'">
+    <awf-button (click)="setActiveTab('home')" [class.active]="activeTab === 'home'">
       <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;home&quot;&gt;
 &lt;path d=&quot;M21.3,8.6L12,1.9L2.7,8.6l0.6,0.8L4,8.9V22h16V8.9l0.7,0.5L21.3,8.6z M14,21h-4v-7h4V21z M19,21h-4v-8H9v8H5V8.2l7-5l7,5.1
 	V21z&quot;&gt;&lt;/path&gt;
 &lt;/svg&gt;"></awf-icon>
       Home
     </awf-button>
-    <awf-button (click)="setActive('projects')" [class.active]="activeTab === 'projects'">
+    <awf-button (click)="setActiveTab('projects')" [class.active]="activeTab === 'projects'">
       <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;Layer_1&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;projects&quot;&gt;
 &lt;g&gt;
 	&lt;rect x=&quot;6&quot; y=&quot;18&quot; width=&quot;10&quot; height=&quot;1&quot;&gt;&lt;/rect&gt;
@@ -38,7 +38,7 @@
 &lt;/svg&gt;"></awf-icon>
       Projects
     </awf-button>
-    <awf-button (click)="setActive('instruments')" [class.active]="activeTab === 'instruments'">
+    <awf-button (click)="setActiveTab('instruments')" [class.active]="activeTab === 'instruments'">
       <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;assay-media&quot;&gt;
 &lt;g&gt;
 	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
@@ -50,7 +50,7 @@
       Instruments
     </awf-button>
     <hr>
-    <awf-button (click)="setActive('status')" [class.active]="activeTab === 'status'">
+    <awf-button (click)="setActiveTab('status')" [class.active]="activeTab === 'status'">
         <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;list-view&quot;&gt;
 &lt;g&gt;
 	&lt;path d=&quot;M2,14h6v-4H2V14z M3,11h4v2H3V11z&quot;&gt;&lt;/path&gt;
@@ -63,7 +63,7 @@
 &lt;/svg&gt;"></awf-icon>
         Status
       </awf-button>
-      <awf-button (click)="setActive('singlesample')" [class.active]="activeTab === 'singlesample'">
+      <awf-button (click)="setActiveTab('singlesample')" [class.active]="activeTab === 'singlesample'">
         <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;assay-media&quot;&gt;
 &lt;g&gt;
 	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
@@ -74,7 +74,7 @@
 &lt;/svg&gt;"></awf-icon>
         Single Sample
       </awf-button>
-      <awf-button>
+      <awf-button (click)="setActiveTab('sequence')" [class.active]="activeTab === 'sequence'">
         <awf-icon raw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;three-samples&quot;&gt;
 &lt;g transform=&quot;scale(0.7) translate(-5 -2)&quot;&gt;
 	&lt;path d=&quot;M9,19h6v-7H9V19z M10,13h4v5h-4V13z&quot;&gt;&lt;/path&gt;
@@ -145,49 +145,56 @@
 
   <div class="container">
     <ng-container *ngIf="activeTab === 'home'">
-      <!--<ag-login-page open [productName]="productName"
-                 [productIcon]="productIcon"
-                 [loginPrompt]="loginPrompt"
-                 [loginFooterText]="loginFooterText"
-                 [validDomains]="validDomains"
-                 [isChangePassword]="isChangePassword"
-                 (loginAction)="loginAction($event)">
-  </ag-login-page>-->
-      <div class="main-grid">
-        <div class="left-column-login">
 
-          <awf-launch-icon mode="squircle" iconraw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;star&quot;&gt;
-&lt;path d=&quot;M21,9h-7l-2.5-6L9,9H2l6,4.5L5,21l6.5-5l6.5,5l-3-7.5L21,9z M15.7,18l-4.2-3.2L7.3,18l1.9-4.8L5,10h4.7l1.8-4.4l1.8,4.4H18
-	l-4.2,3.2L15.7,18z&quot;&gt;&lt;/path&gt;
-&lt;/svg&gt;" iconsrc=""></awf-launch-icon>
+      <ag-login-page *ngIf="isLogged===false" open [productName]="productName"
+                     [productIcon]="productIcon"
+                     [loginPrompt]="loginPrompt"
+                     [loginFooterText]="loginFooterText"
+                     [isChangePassword]="isChangePassword"
+                     [validDomains]="validDomains"
+                     [selectedDomain]="domain"
+                     [isSettingUp]=false
+                     [showCloseButton]=true
+                     (closeAction)="closeAction($event)"
+                     (loginAction)="loginAction($event)" >
+      </ag-login-page>
+
+      <ag-credential-success-form *ngIf="isLogged===true" [active]=true></ag-credential-success-form>
+      <!--<div class="main-grid">
+
+          <div class="left-column-login">
+
+            <awf-launch-icon mode="squircle" iconraw="&lt;svg version=&quot;1.1&quot; id=&quot;icon&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; x=&quot;0px&quot; y=&quot;0px&quot; viewBox=&quot;0 0 24 24&quot; style=&quot;enable-background:new 0 0 24 24;&quot; xml:space=&quot;preserve&quot; data-icon-name=&quot;star&quot;&gt;
+  &lt;path d=&quot;M21,9h-7l-2.5-6L9,9H2l6,4.5L5,21l6.5-5l6.5,5l-3-7.5L21,9z M15.7,18l-4.2-3.2L7.3,18l1.9-4.8L5,10h4.7l1.8-4.4l1.8,4.4H18
+    l-4.2,3.2L15.7,18z&quot;&gt;&lt;/path&gt;
+  &lt;/svg&gt;" iconsrc=""></awf-launch-icon>
 
 
 
-          <awf-title-bar header="Login to Control Panel">
+            <awf-title-bar header="Login to Control Panel">
 
-          </awf-title-bar>
-          <awf-input>
-            <awf-text slot="label" for="username-input">Username</awf-text>
-            <input id="username-input" type="text" autocomplete="username" [(ngModel)]="username" />
-          </awf-input>
+            </awf-title-bar>
+            <awf-input-text>
+              <label slot="label" for="username-input">Username</label>
+              <input id="username-input" type="text" autocomplete="off" value="{{username}}"/>
+            </awf-input-text>
 
-          <awf-input>
-            <awf-text slot="label" for="password-input">Password</awf-text>
-            <input id="password-input" type="password" autocomplete="current-password" [(ngModel)]="password" />
-          </awf-input>
+            <awf-input-password>
+              <label slot="label">Password</label>
+              <input value="{{password}}">
+            </awf-input-password>
 
-          <awf-button id="btnStart" (click)="start()" [disabled]="isLoading" style="margin-top: 12px;">
-            {{ isLoading ? 'Loading...' : 'Login' }}
-          </awf-button>
+            <awf-button id="btnStart" (click)="start()" [disabled]="isLoading" style="margin-top: 12px;">
+              {{ isLoading ? 'Loading...' : 'Login' }}
+            </awf-button>
 
-        </div>
+          </div>-->
 
-        <div class="right-column">
-          <awf-banner open=""*ngFor="let msg of message" header="{{  msg }}">
-            <!--message[message.length - 1]-->
-          </awf-banner>
-        </div>
+      <div class="right-column">
+        <awf-banner open="" *ngFor="let msg of message" header="{{  msg }}">
+        </awf-banner>
       </div>
+      <!--</div>-->
 
     </ng-container>
     <ng-container *ngIf="activeTab === 'projects'">
@@ -210,12 +217,9 @@
     </ng-container>
 
     <ng-container *ngIf="activeTab === 'status'">
-      <div class="main-grid">
         <app-status [selectedInstrument]="selectedInstrument"
                     [modules]="modules"
                     [token]="token"></app-status>
-      </div>
-
     </ng-container>
 
     <ng-container *ngIf="activeTab === 'singlesample'">
