@@ -21,22 +21,19 @@ export class RunPanelComponent implements OnChanges {
   @Output() runSubmit = new EventEmitter<RunForm>();
 
   runInProgress = false;;
-  resultPath = 'C:\\CDSProjects\\' + this.selectedProject?.name + '\\Results';
-  resultFileName = 'test1';
-  acquisitionMethod = 'C:\\CDSProjects\\' + this.selectedProject?.name + '\\Methods\\dp.amx';
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // initialize local fields when parent provides defaults
-    //if (changes.initialResultPath && !changes.initialResultPath.firstChange) {
-    //  this.resultPath = this.initialResultPath;
-    //}
-    //if (changes.initialResultFileName && !changes.initialResultFileName.firstChange) {
-    //  this.resultFileName = this.initialResultFileName;
-    //}
-    //if (changes.initialAcquisitionMethod && !changes.initialAcquisitionMethod.firstChange) {
-    //  this.acquisitionMethod = this.initialAcquisitionMethod;
-    //}
+  // Champs dérivés
+  resultPath: string = '';
+  resultFileName = 'test1';
+  acquisitionMethod: string = '';
+
+
+  ngOnChanges(): void {
+    const projectName = this.selectedProject?.name ?? null;
+    this.resultPath = projectName ? `C:\\CDSProjects\\${projectName}\\Results` : '';
+    this.acquisitionMethod = projectName ? `C:\\CDSProjects\\${projectName}\\Methods\\dp.amx` : '';
   }
+
 
   submit(): void {
     this.runSubmit.emit({
