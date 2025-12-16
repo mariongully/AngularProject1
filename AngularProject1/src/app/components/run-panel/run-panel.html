@@ -9,20 +9,32 @@
     </div>
   </div>
   </div>
-  <div class="left-column">
-    <h3>Associated instrument:</h3>
+<div class="left-column">
+  <h3>Associated instrument:</h3>
 
-    <div *ngIf="selectedInstrument" class="instrument-card">
-      <div class="instrument-left">
-        <span class="state-square" [ngClass]="getStateClass(selectedInstrument?.instrumentState)" title="{{selectedInstrument?.instrumentState}}"></span>
-        <div class="instrument-meta">
-          <div class="instrument-name">{{ selectedInstrument?.name }}</div>
-          <small class="instrument-state-text" *ngIf="!selectedInstrument?.stateLoading"> {{ selectedInstrument?.instrumentState }}</small>
-          <small class="instrument-state-text" *ngIf="selectedInstrument?.stateLoading"> (loading...) </small>
-        </div>
+
+  <div *ngIf="selectedInstrument as si" class="instrument-card">
+    <div class="instrument-left">
+      <span class="state-square"
+            [ngClass]="getStateClass(si.instrumentState)"
+            [title]="si.instrumentState"></span>
+
+      <div class="instrument-meta">
+        <div class="instrument-name">{{ si.name }}</div>
+
+        <small class="instrument-state-text" *ngIf="!si.stateLoading">
+          {{ si.instrumentState }}
+        </small>
+
+        <small class="instrument-state-text" *ngIf="si.stateLoading">
+          (loading...)
+        </small>
       </div>
     </div>
+    
+
   </div>
+</div>
 
   <div class="right-column">
     <h3>Run submission</h3>
